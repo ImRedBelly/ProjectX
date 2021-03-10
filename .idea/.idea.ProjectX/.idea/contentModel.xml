@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\ImRed\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\ImRed\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_ProjectX.969187426.00" t="ExcludeRecursive" />
+    <e p="D:\MarchelloHub\ProjectX" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Arrow.cs" t="Include" />
+        <e p="AudioBossOne.cs" t="Include" />
+        <e p="Bashabel.cs" t="Include" />
+        <e p="BossOne.cs" t="Include" />
+        <e p="BossRock.cs" t="Include" />
+        <e p="Chan.cs" t="Include" />
+        <e p="Key.cs" t="Include" />
+        <e p="MetroidvaniaController" t="Include">
+          <e p="Animation" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="EndParamBehaviour.cs" t="Include" />
+              <e p="JumpStateBehaviour.cs" t="Include" />
+              <e p="PlaySoundBehaviour.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Enemies" t="Include">
+              <e p="Ally.cs" t="Include" />
+              <e p="Enemy.cs" t="Include" />
+              <e p="ThrowableProjectile.cs" t="Include" />
+            </e>
+            <e p="Environment" t="Include">
+              <e p="DestructibleObject.cs" t="Include" />
+              <e p="Grass.cs" t="Include" />
+            </e>
+            <e p="KillZone.cs" t="Include" />
+            <e p="Player" t="Include">
+              <e p="Attack.cs" t="Include" />
+              <e p="CameraFollow.cs" t="Include" />
+              <e p="CharacterController2D.cs" t="Include" />
+              <e p="PlayerMovement.cs" t="Include" />
+              <e p="ThrowableWeapon.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Platform.cs" t="Include" />
+        <e p="Restart.cs" t="Include" />
+        <e p="RotatePlatform.cs" t="Include" />
+        <e p="Scripts" t="Include">
+          <e p="Audio" t="Include">
+            <e p="AudioManager.cs" t="Include" />
+          </e>
+          <e p="Bullet.cs" t="Include" />
+          <e p="CutScene" t="Include">
+            <e p="CutScene.cs" t="Include" />
+          </e>
+          <e p="Enemy" t="Include">
+            <e p="EnemyLife.cs" t="Include" />
+            <e p="WalkEnemy.cs" t="Include" />
+          </e>
+          <e p="EnemyBullet.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
+          <e p="Glowworm.cs" t="Include" />
+          <e p="Lamp.cs" t="Include" />
+          <e p="LevelSwitch.cs" t="Include" />
+          <e p="LightUP.cs" t="Include" />
+          <e p="Menu" t="Include">
+            <e p="Loader.cs" t="Include" />
+          </e>
+          <e p="Money.cs" t="Include" />
+          <e p="Parallax.cs" t="Include" />
+          <e p="Player" t="Include">
+            <e p="HealthPlayer.cs" t="Include" />
+            <e p="PlayerMovement1.cs" t="Include" />
+            <e p="PlayerMovementT.cs" t="Include" />
+          </e>
+          <e p="Scene" t="Include">
+            <e p="Level 1" t="Include">
+              <e p="BadItems.cs" t="Include" />
+              <e p="Boss" t="Include">
+                <e p="BossMoney.cs" t="Include" />
+                <e p="SpawnerMoney.cs" t="Include" />
+              </e>
+              <e p="LampSpawn.cs" t="Include" />
+              <e p="Puzle" t="Include">
+                <e p="PuzleLevel1.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Level 2-3" t="Include">
+              <e p="Spider.cs" t="Include" />
+            </e>
+            <e p="LoadeScene.cs" t="Include" />
+            <e p="PuzleLevel2" t="Include">
+              <e p="PuzleLevel2.cs" t="Include" />
+            </e>
+          </e>
+          <e p="ShaderAlpha" t="Include">
+            <e p="Dead.cs" t="Include" />
+          </e>
+          <e p="Shield.cs" t="Include" />
+          <e p="СollectMoney.cs" t="Include" />
+        </e>
+        <e p="textInBossRUN.cs" t="Include" />
+        <e p="TextReader.cs" t="Include" />
+        <e p="TUTOR" t="Include">
+          <e p="DestoyCube" t="Include">
+            <e p="DestroyCube.cs" t="Include" />
+            <e p="ParticleCube.cs" t="Include" />
+          </e>
+          <e p="Gun" t="Include">
+            <e p="BulletGun.cs" t="Include" />
+            <e p="GUN.cs" t="Include" />
+            <e p="ShieldParticle.cs" t="Include" />
+          </e>
+          <e p="Level" t="Include">
+            <e p="LevelManager.cs" t="Include" />
+          </e>
+          <e p="ShieldTutor" t="Include">
+            <e p="ShieldTutor.cs" t="Include" />
+          </e>
+          <e p="Teleport" t="Include">
+            <e p="Teleport.cs" t="Include" />
+          </e>
+          <e p="Torch" t="Include">
+            <e p="Torch.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="ProjectX.sln" t="IncludeFlat" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

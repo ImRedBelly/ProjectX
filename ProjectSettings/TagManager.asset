@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Bullet
+  - Money
+  - Shield
+  - PlayerShield
+  - EnemyBullet
+  - Enemy
+  - PinkBullet
+  - Lamp
+  - BashPoint
+  - Torch
+  - DestoyCube
+  - PointAttackBoss
+  - DeathCopy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Ground
+  - Bullet
+  - Player
+  - PlayerShield
+  - Enemy
+  - EnemyBullet
+  - Lamp
+  - Boss
+  - DeadCopy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
