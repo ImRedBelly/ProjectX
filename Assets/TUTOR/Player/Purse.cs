@@ -15,16 +15,16 @@ public class Purse : MonoBehaviour
         if (money <= 0)
         {
             isBuy = false;
-           // print("Денег нет");
+            // print("Денег нет");
         }
         else
         {
-           // print("Деньги есть");
+            // print("Деньги есть");
 
             if ((money - price) < 0)
             {
                 isBuy = false;
-               // print("Не хватает");
+                // print("Не хватает");
             }
             else
             {
@@ -40,5 +40,14 @@ public class Purse : MonoBehaviour
     public bool Buy()
     {
         return isBuy;
+    }
+
+    public void GiveMoney()
+    {
+        GameManagerTutor.instance.GiveMoney(money);
+    }
+    public void TakeMoney(int ghostMoney)
+    {
+        money += ghostMoney;
     }
 }

@@ -45,7 +45,7 @@ public class Boss : MonoBehaviour
     Coroutine end;
     Coroutine Teleport;
 
-    float attack = 5;
+    float teleportation = 7;
     float nextTeleport = 0;
     private void Start()
     {
@@ -53,7 +53,7 @@ public class Boss : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //print(Mathf.Abs(distToPlayer));
+        print(Mathf.Abs(distToPlayer));
         if (life <= 0)
             StartCoroutine(DestroyEnemy());
 
@@ -66,29 +66,29 @@ public class Boss : MonoBehaviour
 
             if (Mathf.Abs(distToPlayer) > rangeDist)
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
+                m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
                 animator.SetBool("IsWaiting", true);
             }
 
             else if (Mathf.Abs(distToPlayer) > meleeDist && Mathf.Abs(distToPlayer) < rangeDist)
             {
                 // стою и стреляю 
+                shooting.SetActive(true);
+                animator.SetBool("IsWaiting", true);
+                m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
+                StartCoroutine(ShotSpecialBullet());
 
+
+                //телепорт
                 if (nextTeleport <= 0)
                 {
                     StartCoroutine(Portal());
-                    nextTeleport = attack;
+                    nextTeleport = teleportation;
                 }
                 if (nextTeleport > 0)
                 {
                     nextTeleport -= Time.deltaTime;
                 }
-
-
-                shooting.SetActive(true);
-                animator.SetBool("IsWaiting", true);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
-                StartCoroutine(ShotSpecialBullet());
 
                 if (Mathf.Abs(distToPlayerY) < 2f)
                 {
@@ -98,7 +98,7 @@ public class Boss : MonoBehaviour
                     if (nextTeleport <= 0)
                     {
                         RangeAttack();
-                        nextTeleport = attack;
+                        nextTeleport = teleportation;
                     }
                     if (nextTeleport > 0)
                     {

@@ -108,7 +108,8 @@ public class HealthPlayer : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         rb.velocity = new Vector2(0, rb.velocity.y);
 
-        DeathController.deathController.SavePosition();
+        GameManagerTutor.instance.SavePosition();
+        
 
         yield return new WaitForSeconds(1.1f);
         SceneManager.LoadScene(0);

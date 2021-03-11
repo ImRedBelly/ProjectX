@@ -9,7 +9,9 @@ public class KillZone : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            DeathController.deathController.SavePosition();
+            GameManagerTutor.instance.SavePosition();
+
+
             SceneManager.LoadScene(0);
         }
         else

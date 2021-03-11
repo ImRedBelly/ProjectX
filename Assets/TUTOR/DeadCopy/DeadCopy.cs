@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class DeadCopy : MonoBehaviour
 {
+    public int money = 0;
+
     [Header("Components")]
     public Animator animator;
 
@@ -19,18 +21,25 @@ public class DeadCopy : MonoBehaviour
     private float distToPlayer;
     private float distToPlayerY;
 
-    public float meleeDist = 1.5f;
-    private bool canAttack = true;
     public Transform attackCheck;
     public float dmgValue = 4;
+    public float meleeDist = 1.5f;
+    private bool canAttack = true;
 
     bool isEnemy;
     public LayerMask enemyMask;
 
+    private void Start()
+    {
+        money = GameManagerTutor.instance.countMoney;
+    }
     void FixedUpdate()
     {
         if (life <= 0)
+        {
             StartCoroutine(DestroyEnemy());
+            
+        }
 
         else if (enemy != null)
         {
@@ -58,6 +67,7 @@ public class DeadCopy : MonoBehaviour
             enemy = GameObject.Find("DrawCharacter");
         }
     }
+
 
     void Flip()
     {
@@ -116,7 +126,8 @@ public class DeadCopy : MonoBehaviour
 
     IEnumerator DestroyEnemy()
     {
-       // animator.SetBool("IsDead", true);
+        // animator.SetBool("IsDead", true);
+        PlayerMovement.instance.GetComponent<Purse>().TakeMoney(money);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

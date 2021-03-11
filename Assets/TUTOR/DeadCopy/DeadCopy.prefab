@@ -281,13 +281,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cbcc5006002d3a48a3c812e4289b05a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  money: 0
   animator: {fileID: 540495928564482403}
   life: 10
   speed: 5
   enemy: {fileID: 0}
-  meleeDist: 1.5
   attackCheck: {fileID: 540495927611220823}
-  dmgValue: 4
+  dmgValue: 1
+  meleeDist: 1.5
   enemyMask:
     serializedVersion: 2
     m_Bits: 1024

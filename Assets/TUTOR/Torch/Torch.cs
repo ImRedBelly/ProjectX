@@ -18,4 +18,5 @@ public class Torch : MonoBehaviour
         spriteRenderer.color = Color.red;
         levelManager.Light();
     }
+
 }
