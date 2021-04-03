@@ -17,6 +17,7 @@ TagManager:
   - DestoyCube
   - PointAttackBoss
   - DeathCopy
+  - PlayerBullet
   layers:
   - Default
   - TransparentFX

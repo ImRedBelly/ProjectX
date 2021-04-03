@@ -5,118 +5,153 @@ using System.Collections.Generic;
 public class Boss : MonoBehaviour
 {
     [Header("Components")]
-    public Rigidbody2D m_Rigidbody2D;
+    public Rigidbody2D Rigidbody2D;
     public Animator animator;
+    public Animator animatorHand;
+    public GameObject shieldBoss;
 
 
     [Header("Options")]
     public float life = 10;
     public float speed = 5f;
-    [SerializeField] private float m_DashForce = 25f;
 
     private bool facingRight = true;
-    private bool m_FacingRight = true;
 
+    [Header("Melee Attack")]
+    float timerIsAttack = 4;
+    float timerMeleeAttack = 4;
 
     [Header("Attack")]
     public GameObject shooting;
 
+    public GameObject shockWave;
     public GameObject bullet;
+    public Transform positionWave;
 
     public GameObject enemy;
     private float distToPlayer;
-    private float distToPlayerY;
+
     public float meleeDist = 1.5f;
-    public float rangeDist = 10f;
-    private bool canAttack = true;
+
     public Transform attackCheck;
+    private bool canAttack = true;
     public float dmgValue = 4;
 
-
-    private float randomDecision = 0;
-    private bool doOnceDecision = true;
-    private bool endDecision = false;
-
-    [Header("Teleport")]
-    public SpriteRenderer spriteRenderer;
-    Material material;
-    float fade = 1f;
-    Coroutine start;
-    Coroutine end;
-    Coroutine Teleport;
-
-    float teleportation = 7;
-    float nextTeleport = 0;
+    public BossState activState;
+    public enum BossState
+    {
+        IDLE,
+        MOVE,
+        MELEEATTACK,
+        MELEEEASYATTACK,
+        MELEEHARDATTACK
+    }
     private void Start()
     {
-        material = spriteRenderer.material;
+        activState = BossState.IDLE;
     }
+
     void FixedUpdate()
     {
-        print(Mathf.Abs(distToPlayer));
+        //print(Mathf.Abs(distToPlayer));
+
         if (life <= 0)
             StartCoroutine(DestroyEnemy());
 
         else if (enemy != null)
         {
             distToPlayer = enemy.transform.position.x - transform.position.x;
-            distToPlayerY = enemy.transform.position.y - transform.position.y;
 
-
-
-            if (Mathf.Abs(distToPlayer) > rangeDist)
+            if (Mathf.Abs(distToPlayer) < meleeDist && timerMeleeAttack <= 0)
             {
-                m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
-                animator.SetBool("IsWaiting", true);
+                activState = BossState.MELEEATTACK;
+                timerMeleeAttack = 3;
+            }
+            else
+            {
+                timerMeleeAttack -= Time.deltaTime;
             }
 
-            else if (Mathf.Abs(distToPlayer) > meleeDist && Mathf.Abs(distToPlayer) < rangeDist)
+            switch (activState)
             {
-                // стою и стреляю 
-                shooting.SetActive(true);
-                animator.SetBool("IsWaiting", true);
-                m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
-                StartCoroutine(ShotSpecialBullet());
+                case BossState.IDLE:
+                    Idle();
 
-
-                //телепорт
-                if (nextTeleport <= 0)
-                {
-                    StartCoroutine(Portal());
-                    nextTeleport = teleportation;
-                }
-                if (nextTeleport > 0)
-                {
-                    nextTeleport -= Time.deltaTime;
-                }
-
-                if (Mathf.Abs(distToPlayerY) < 2f)
-                {
-                    // просто бегу
-                    shooting.SetActive(false);
-                    Run(distToPlayer / Mathf.Abs(distToPlayer));
-                    if (nextTeleport <= 0)
+                    if (timerIsAttack > 0)
+                        timerIsAttack -= Time.deltaTime;
+                    else
                     {
-                        RangeAttack();
-                        nextTeleport = teleportation;
-                    }
-                    if (nextTeleport > 0)
-                    {
-                        nextTeleport -= Time.deltaTime;
-                    }
-                }
-            }
 
-            else if (Mathf.Abs(distToPlayer) > 0.25f && Mathf.Abs(distToPlayer) < meleeDist && Mathf.Abs(distToPlayerY) < 2f) // Melee Damage
-            {
-                shooting.SetActive(false);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(0f, m_Rigidbody2D.velocity.y); // бью и стою
-                if ((distToPlayer > 0f && transform.localScale.x < 0f) || (distToPlayer < 0f && transform.localScale.x > 0f))
-                    Flip();
-                if (canAttack)
-                {
-                    MeleeAttack();
-                }
+                        animator.SetBool("Attack", false);
+                        animatorHand.SetBool("Attack", false);
+
+
+                        int randomAct = Random.Range(0, 2);
+                        if (randomAct == 0)
+                        {
+                            print("0");
+                            
+                            activState = BossState.MELEEEASYATTACK;
+                        }
+                        else if (randomAct == 1)
+                        {
+                            print("1");
+                            
+                            activState = BossState.MELEEHARDATTACK;
+                        }
+                        else if (randomAct == 2)
+                        {
+                            activState = BossState.MOVE;
+                        }
+                    }
+                    break;
+
+
+                case BossState.MOVE:
+
+
+
+                    Run(distToPlayer);
+                    if (Mathf.Abs(distToPlayer) > 0.25f && Mathf.Abs(distToPlayer) < meleeDist)
+                        activState = BossState.MELEEATTACK;
+                    break;
+
+
+
+                case BossState.MELEEATTACK:
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(0f, Rigidbody2D.velocity.y);
+                    if ((distToPlayer > 0f && transform.localScale.x < 0f) || (distToPlayer < 0f && transform.localScale.x > 0f))
+                        Flip();
+                    if (canAttack)
+                        animator.SetBool("Attack", true);
+                        animatorHand.SetBool("Attack", true);
+                    // MeleeAttack();
+                    break;
+
+
+
+                case BossState.MELEEEASYATTACK:
+
+                    animator.SetBool("Attack", true);
+                    animatorHand.SetBool("Attack", true);
+
+                    if ((distToPlayer > 0f && transform.localScale.x < 0f) || (distToPlayer < 0f && transform.localScale.x > 0f))
+                        Flip();
+                    shooting.SetActive(true);
+                    timerIsAttack = 3;
+                    break;
+
+
+                case BossState.MELEEHARDATTACK:
+
+                    animator.SetBool("Attack", true);
+                    animatorHand.SetBool("Attack", true);
+
+                    if ((distToPlayer > 0f && transform.localScale.x < 0f) || (distToPlayer < 0f && transform.localScale.x > 0f))
+                        Flip();
+                    ShotSpecialBullet();
+                    timerIsAttack = 3;
+                    break;
             }
         }
         else
@@ -126,11 +161,11 @@ public class Boss : MonoBehaviour
 
 
 
-        if (transform.localScale.x * m_Rigidbody2D.velocity.x > 0 && !m_FacingRight && life > 0)
+        if (transform.localScale.x * Rigidbody2D.velocity.x > 0 && !facingRight && life > 0)
         {
             Flip();
         }
-        else if (transform.localScale.x * m_Rigidbody2D.velocity.x < 0 && m_FacingRight && life > 0)
+        else if (transform.localScale.x * Rigidbody2D.velocity.x < 0 && facingRight && life > 0)
         {
             Flip();
         }
@@ -138,81 +173,54 @@ public class Boss : MonoBehaviour
 
     void Flip()
     {
-        facingRight = !facingRight;
 
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
     }
-
     public void ApplyDamage(float damage)
     {
-        float direction = damage / Mathf.Abs(damage);
+        // float direction = damage / Mathf.Abs(damage);
         damage = Mathf.Abs(damage);
         animator.SetBool("Hit", true);
         life -= damage;
-        transform.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        transform.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(direction * 300f, 100f));
+        //transform.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        //transform.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(direction * 300f, 100f));
     }
 
     public void MeleeAttack()
     {
-        transform.GetComponent<Animator>().SetBool("Attack", true);
-        Collider2D[] collidersEnemies = Physics2D.OverlapCircleAll(attackCheck.position, 0.9f);
-        for (int i = 0; i < collidersEnemies.Length; i++)
+        Collider2D[] player = Physics2D.OverlapCircleAll(attackCheck.position, 0.9f);
+        for (int i = 0; i < player.Length; i++)
         {
-            if (collidersEnemies[i].gameObject.tag == "Enemy" && collidersEnemies[i].gameObject != gameObject)
-            {
-                if (transform.localScale.x < 1)
-                {
-                    dmgValue = -dmgValue;
-                }
-                collidersEnemies[i].gameObject.SendMessage("ApplyDamage", dmgValue);
-            }
-            else if (collidersEnemies[i].gameObject.tag == "Player")
-            {
-                collidersEnemies[i].gameObject.GetComponent<HealthPlayer>().ApplyDamage(2f, transform.position);
-            }
+            if (player[i].gameObject.tag == "Player")
+                player[i].gameObject.GetComponent<HealthPlayer>().ApplyDamage(2f, transform.position);
         }
         StartCoroutine(WaitToAttack(0.5f));
     }
 
-    public void RangeAttack()
+    public void Run(float position)
     {
-            GameObject throwableProj = Instantiate(bullet, transform.position + new Vector3(transform.localScale.x * 0.5f, -0.2f), Quaternion.identity) as GameObject;
-            throwableProj.GetComponent<ThrowableProjectile>().owner = gameObject;
-            Vector2 direction = new Vector2(transform.localScale.x, 0f);
-            throwableProj.GetComponent<ThrowableProjectile>().direction = direction;
-        
-    }
-
-    public void Run(float positionX)
-    {
-        //distToPlayer / Mathf.Abs(distToPlayer) 
         animator.SetBool("IsWaiting", false);
-        m_Rigidbody2D.velocity = new Vector2(positionX * speed, m_Rigidbody2D.velocity.y);
+        animatorHand.SetBool("IsWaiting", false);
+        Rigidbody2D.velocity = new Vector2(position / Mathf.Abs(position) * speed, Rigidbody2D.velocity.y);
     }
 
     public void Idle()
     {
-        m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
-        if (doOnceDecision)
-        {
-            animator.SetBool("IsWaiting", true);
-            StartCoroutine(NextDecision(1f));
-        }
+        Rigidbody2D.velocity = new Vector2(0f, Rigidbody2D.velocity.y);
+        animator.SetBool("IsWaiting", true);
+        animatorHand.SetBool("IsWaiting", true);
     }
 
-    public void EndDecision()
-    {
-        randomDecision = Random.Range(0.0f, 0.6f);
-        endDecision = true;
-    }
 
-    IEnumerator ShotSpecialBullet()
+
+    void ShotSpecialBullet()
     {
-        yield return new WaitForSeconds(3);
-        // стрелять особенной пулей
+        GameObject wave = Instantiate(shockWave, positionWave.position, Quaternion.Euler(0, 0, 90));
+        wave.GetComponent<ShockWave>().direction = -transform.up * transform.localScale.x;
+
+        activState = BossState.MOVE;
     }
 
     IEnumerator WaitToAttack(float time)
@@ -220,17 +228,11 @@ public class Boss : MonoBehaviour
         canAttack = false;
         yield return new WaitForSeconds(time);
         canAttack = true;
+        activState = BossState.IDLE;
     }
 
 
-    IEnumerator NextDecision(float time)
-    {
-        doOnceDecision = false;
-        yield return new WaitForSeconds(time);
-        EndDecision();
-        doOnceDecision = true;
-        animator.SetBool("IsWaiting", false);
-    }
+
 
     IEnumerator DestroyEnemy()
     {
@@ -240,64 +242,21 @@ public class Boss : MonoBehaviour
         capsule.direction = CapsuleDirection2D.Horizontal;
         transform.GetComponent<Animator>().SetBool("IsDead", true);
         yield return new WaitForSeconds(0.25f);
-        m_Rigidbody2D.velocity = new Vector2(0, m_Rigidbody2D.velocity.y);
+        Rigidbody2D.velocity = new Vector2(0, Rigidbody2D.velocity.y);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
 
 
-
-
-
-    IEnumerator Portal()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        TeleportMinus();
-
-        yield return new WaitForSeconds(1);
-
-        Vector2 teleportPosition = enemy.transform.position;
-        teleportPosition.y += 5;
-        transform.position = teleportPosition;
-
-        TeleportPlus();
-    }
-    public void TeleportMinus()
-    {
-        start = StartCoroutine(Minus());
-    }
-    IEnumerator Minus()
-    {
-        while (fade >= 0)
+        if (collision.gameObject.CompareTag("PlayerBullet"))
         {
-            yield return new WaitForSeconds(0.1f);
-            fade -= 0.1f;
-            if (fade < 0)
-            {
-                StopCoroutine(start);
-                fade = 0;
-            }
-            material.SetFloat("_Fade", fade);
+            ApplyDamage(1);
+            shieldBoss.SetActive(true);
+            activState = BossState.MOVE;
         }
     }
-    public void TeleportPlus()
-    {
-        end = StartCoroutine(Plus());
-    }
-    IEnumerator Plus()
-    {
-        while (fade <= 1)
-        {
-            yield return new WaitForSeconds(0.1f);
-            fade += 0.2f;
-            if (fade > 1)
-            {
-                StopCoroutine(end);
-                fade = 1;
-            }
-            material.SetFloat("_Fade", fade);
-        }
-    }
-
 
     private void OnDrawGizmos()
     {

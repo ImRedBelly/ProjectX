@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.SceneManagement;
@@ -24,7 +24,7 @@ public class CharacterController2D : MonoBehaviour
     private bool canDash = true;
     private bool isDashing = false; //If player is dashing
     private bool m_IsWall = false; //If there is a wall in front of the player
-    private bool isWallSliding = false; //If player is sliding in a wall
+    public bool isWallSliding = false; //If player is sliding in a wall
     private bool oldWallSlidding = false; //If player is sliding in a wall in the previous frame
     private float prevVelocityX = 0f;
     private bool canCheck = false; //For check if player is wallsliding
@@ -33,7 +33,7 @@ public class CharacterController2D : MonoBehaviour
 
     public bool canMove = true; //If player can move
 
-    private Animator animator;
+    public Animator animator;
     public ParticleSystem particleJumpUp; //Trail particles
     public ParticleSystem particleJumpDown; //Explosion particles
 
@@ -105,8 +105,8 @@ public class CharacterController2D : MonoBehaviour
         {
             if (m_Rigidbody2D.velocity.y < -0.5f)
                 limitVelOnWallJump = false;
-            
-            jumpWallDistX = (jumpWallStartX - transform.position.x) * (transform.localScale.x * 4);  // ÝÒÎ ÂËÈßÅÒ ÍÀ CanMove
+
+            jumpWallDistX = (jumpWallStartX - transform.position.x) * (transform.localScale.x * 4);  // ÃÃ’ÃŽ Ã‚Ã‹ÃˆÃŸÃ…Ã’ ÃÃ€ CanMove
             if (jumpWallDistX < -0.5f && jumpWallDistX > -1f)
             {
                 //print("true");
@@ -130,8 +130,7 @@ public class CharacterController2D : MonoBehaviour
             }
         }
     }
-
-
+    
     public void Move(float move, bool jump, bool dash)
     {
         if (canMove)

@@ -7,6 +7,8 @@ public class Attack : MonoBehaviour
 {
     public Slider damageSlider;
 
+    public GameObject bullet;
+
     public float damageValue = 1;
     float sliderMaxValue = 50;
 
@@ -42,6 +44,11 @@ public class Attack : MonoBehaviour
             canAttack = false;
             animator.SetBool("IsAttacking", true);
             StartCoroutine(AttackCooldown());
+        }
+        if (Input.GetMouseButtonDown(2))
+        {
+            GameObject copyBullet = Instantiate(bullet, attackCheck.position, Quaternion.identity);
+            copyBullet.GetComponent<ThrowableWeapon>().direction = transform.right * transform.localScale.x;
         }
     }
 

@@ -16,7 +16,7 @@ public class ThrowableWeapon : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Enemy")
+		if (collision.gameObject.tag == "Boss")
 		{
 			collision.gameObject.SendMessage("ApplyDamage", Mathf.Sign(direction.x) * 2f);
 			Destroy(gameObject);
